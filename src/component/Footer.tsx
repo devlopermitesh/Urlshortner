@@ -1,20 +1,20 @@
-import { NavLink } from "react-router";
+import { NavLink } from 'react-router';
 
 const Footer = () => {
   const year = new Date().getFullYear();
 
   const routes = [
     {
-      path: "/",
-      label: "URL Shortener",
+      path: '/',
+      label: 'URL Shortener',
     },
     {
-      path: "/about",
-      label: "About",
+      path: '/about',
+      label: 'About',
     },
     {
-      path: "/contact",
-      label: "Contact",
+      path: '/contact',
+      label: 'Contact',
     },
   ];
 
@@ -34,9 +34,7 @@ const Footer = () => {
             to={route.path}
             className={({ isActive }) =>
               `transition-colors duration-200 ${
-                isActive
-                  ? "text-sky-400 font-semibold"
-                  : "text-white hover:text-sky-300"
+                isActive ? 'text-sky-400 font-semibold' : 'text-white hover:text-sky-300'
               }`
             }
           >

@@ -1,3 +1,8 @@
-module.exports = {
-  ...require('@vercel/style-guide/prettier'),
+export default {
+  semi: true,
+  singleQuote: true,
+  trailingComma: 'all',
+  tabWidth: 2,
+  printWidth: 100,
+  endOfLine: 'lf',
 };

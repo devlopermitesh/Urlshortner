@@ -1,49 +1,35 @@
 import js from '@eslint/js';
-import globals from 'globals';
-import react from 'eslint-plugin-react';
+import prettier from 'eslint-config-prettier';
 import reactHooks from 'eslint-plugin-react-hooks';
-import prettierConfig from 'eslint-config-prettier';
-import vercelBaseRules from '@vercel/style-guide/eslint/node' assert { type: 'json' };
+import reactRefresh from 'eslint-plugin-react-refresh';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+import { defineConfig } from 'eslint/config';
 
-export default [
-  // 1. Ignore build artifacts 
-  { ignores: ['dist', 'node_modules'] },
-
-  // 2. Core JavaScript & Global Environment configuration
+export default defineConfig([
   {
-    files: ['**/*.{js,jsx,ts,tsx}'],
+    ignores: ['dist/', 'coverage/', 'node_modules/', '*.config.js'],
+  },
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs.flat['recommended-latest'],
+      reactRefresh.configs.vite,
+      prettier,
+    ],
     languageOptions: {
       ecmaVersion: 'latest',
-      sourceType: 'module',
-      globals: {
-        ...globals.browser,
-        ...globals.es2021,
-        ...globals.node,
+      globals: globals.browser,
+      parserOptions: {
+        ecmaFeatures: { jsx: true },
       },
     },
-    plugins: {
-      react,
-      'react-hooks': reactHooks,
-    },
-    // 3. Merging React & Vercel's official styling specifications
     rules: {
-      ...js.configs.recommended.rules,
-      ...react.configs.recommended.rules,
-      ...reactHooks.configs.recommended.rules,
-      ...vercelBaseRules.rules, // Injects Vercel's strict code-quality rules
-
-      // Vercel Defaults overrides for React Web environments
-      'react/react-in-jsx-scope': 'off', // Not needed in Vite/Modern React
-      'react/jsx-uses-react': 'off',
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-    },
-    settings: {
-      react: {
-        version: 'detect',
-      },
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
   },
-
-  // 4. Force Prettier overrides last to eliminate layout style clashes
-  prettierConfig,
-];
+]);

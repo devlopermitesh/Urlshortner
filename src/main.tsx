@@ -1,9 +1,9 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-import { createBrowserRouter } from "react-router";
-import { RouterProvider } from "react-router/dom";
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import './index.css';
+import App from './App.tsx';
+import { createBrowserRouter } from 'react-router';
+import { RouterProvider } from 'react-router/dom';
 import { ErrorPage } from './pages/ErrorPage.tsx';
 import Layout from './Layout.tsx';
 import Analysis from './pages/Analysic.tsx';
@@ -13,37 +13,36 @@ import SignupPage from './pages/Signup.tsx';
 
 const router = createBrowserRouter([
   {
-    path: "/",
-     handle:{
-    title:"Url shortner"
-     },
-     Component:Layout,
-     ErrorBoundary:ErrorPage,
-     children:[
+    path: '/',
+    handle: {
+      title: 'Url shortner',
+    },
+    Component: Layout,
+    ErrorBoundary: ErrorPage,
+    children: [
       {
-        path:"/",
-        index:true,
-        action:SubmitAction,
-        Component:App
-      },
-      {
-        path:"/u/:shortcode",
-      Component:ShortUrlPage
+        path: '/',
+        index: true,
+        action: SubmitAction,
+        Component: App,
       },
       {
-        path:"url-visitor/",
-        Component:Analysis
+        path: '/u/:shortcode',
+        Component: ShortUrlPage,
       },
-       {
-        path:"/signup",
-        Component:SignupPage
+      {
+        path: 'url-visitor/',
+        Component: Analysis,
       },
-     ]
-     
+      {
+        path: '/signup',
+        Component: SignupPage,
+      },
+    ],
   },
 ]);
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router}/>
+    <RouterProvider router={router} />
   </StrictMode>,
-)
+);
