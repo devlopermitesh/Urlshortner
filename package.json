@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-  "lint": "eslint . --max-warnings 0",
-  "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md}\"",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md}\"",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -31,7 +31,7 @@
     "@vercel/style-guide": "^6.0.0",
     "@vitejs/plugin-react": "^6.0.3",
     "babel-plugin-react-compiler": "^1.0.0",
-    "eslint": "^10.7.0",
+    "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
