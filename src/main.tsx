@@ -1,48 +1,30 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import './index.css';
-import App from './App.tsx';
-import { createBrowserRouter } from 'react-router';
+import { Navigate, createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
-import { ErrorPage } from './pages/ErrorPage.tsx';
-import Layout from './Layout.tsx';
-import Analysis from './pages/Analysic.tsx';
-import { SubmitAction } from './component/ShortnerForm.tsx';
-import ShortUrlPage from './pages/ShortUrlPage.tsx';
-import SignupPage from './pages/Signup.tsx';
+import './index.css';
+import Layout from './Layout';
+import { ErrorPage } from './pages/ErrorPage';
+import CartPage from './pages/CartPage';
+import LoginPage from './pages/Login';
+import OrderDetailsPage from './pages/OrderDetailsPage';
+import OrdersPage from './pages/OrdersPage';
+import ProductsPage from './pages/ProductsPage';
+import SignupPage from './pages/Signup';
+import CategoryProductsPage from './pages/CategoryProductsPage';
 
 const router = createBrowserRouter([
-  {
-    path: '/',
-    handle: {
-      title: 'Url shortner',
-    },
-    Component: Layout,
-    ErrorBoundary: ErrorPage,
-    children: [
-      {
-        path: '/',
-        index: true,
-        action: SubmitAction,
-        Component: App,
-      },
-      {
-        path: '/u/:shortcode',
-        Component: ShortUrlPage,
-      },
-      {
-        path: 'url-visitor/',
-        Component: Analysis,
-      },
-      {
-        path: '/signup',
-        Component: SignupPage,
-      },
-    ],
-  },
+  { path: '/', Component: Layout, ErrorBoundary: ErrorPage, children: [
+    { index: true, element: <Navigate to="/products" replace/> },
+    { path: 'products', Component: ProductsPage },
+    { path: 'cart', Component: CartPage },
+    { path: 'orders', Component: OrdersPage },
+    { path: 'orders/:orderId', Component: OrderDetailsPage },
+    { path: 'category/:categoryId', Component: CategoryProductsPage },
+  ] },
+  { path: '/login', Component: LoginPage },
+  { path: '/signup', Component: SignupPage },
+  { path: '*', element: <div className="flex min-h-screen items-center justify-center"><div className="text-center"><h1 className="text-6xl font-bold text-gray-900">404</h1><p className="mt-4 text-lg text-gray-600">Page not found</p><a href="/" className="mt-6 inline-block rounded bg-blue-600 px-6 py-2 text-white hover:bg-blue-700">Go Home</a></div></div> },
 ]);
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>,
-);
+
+createRoot(document.getElementById('root')!).render(<StrictMode><RouterProvider router={router}/></StrictMode>);

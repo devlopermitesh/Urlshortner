@@ -1,17 +1,15 @@
-/// <reference types="vite/client" />
-const BaseUrl = import.meta.env.VITE_API_URL;
-export const api = async (endpoint: string, option?: RequestInit) => {
-  if (!BaseUrl) throw new Error('Api Url location is missing');
+import axios from "axios";
 
-  const response = await fetch(`${BaseUrl}/api/v1/${endpoint}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...option?.headers,
-    },
-    ...option,
-  });
-  if (!response.ok) {
-    throw new Error('Something went wrong');
-  }
-  return response.json();
-};
+const BaseUrl = import.meta.env.VITE_API_URL;
+
+if (!BaseUrl) {
+  throw new Error("API URL is missing");
+}
+
+export const api = axios.create({
+  baseURL: `${BaseUrl}/api/v1`,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  withCredentials: true, // Agar cookies (accessToken) use kar rahe ho
+});

@@ -1,20 +1,9 @@
-const Header = () => {
-  return (
-    <header className="flex w-full h-32  ">
-      <nav className=" flex flex-row justify-center h-auto w-full bg-white py-4 ">
-        <div className="relative   mx-auto  p-2 ">
-          <h1 className="text-brand-primary text-3xl md:text-5xl font-bold">
-            {' '}
-            <span>Url</span>
-            Shortner
-          </h1>
-          <sub className="absolute bottom-10 md:bottom-2 right-0 font-semibold text-md md:text-lg tracking-wide text-brand-secondary">
-            <span className="text-black">by </span>
-            Mitesh
-          </sub>
-        </div>
-      </nav>
-    </header>
-  );
-};
-export default Header;
+import { ShoppingCart } from 'lucide-react';
+import { NavLink } from 'react-router';
+import { useCart } from '../features/ecommerce/hooks';
+
+export default function Header() {
+  const { data: cart } = useCart();
+  const linkClass = ({ isActive }: { isActive: boolean }) => `rounded-lg px-3 py-2 text-sm font-semibold ${isActive ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-gray-100'}`;
+  return <header className="border-b bg-white"><div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-4"><NavLink to="/products" className="text-2xl font-bold text-blue-700">SaleShop</NavLink><nav className="flex items-center gap-1" aria-label="Main navigation"><NavLink to="/products" className={linkClass}>Products</NavLink><NavLink to="/orders" className={linkClass}>Orders</NavLink><NavLink to="/cart" className={linkClass}><span className="inline-flex items-center gap-1"><ShoppingCart size={17}/> Cart <span aria-label={`${cart?.totalCount ?? 0} cart items`} className="rounded-full bg-gray-200 px-1.5 text-xs text-gray-900">{cart?.totalCount ?? 0}</span></span></NavLink></nav></div></header>;
+}

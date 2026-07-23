@@ -1,38 +1,37 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "../utils/api";
-import {
-  CreateUserSchema,
-  type TCreateUser,
-} from "../schema/user.schema";
+import { LoginUserSchema, type TLoginRequest } from "../schema/user.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Link, useLocation, useNavigate } from "react-router";
 
-const SignupPage = () => {
-  const navigate=useNavigate()
+const LoginPage = () => {
+
+  const navigate = useNavigate(); 
+  const location = useLocation();
   const [serverError, setServerError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<TCreateUser>({
-    resolver: zodResolver(CreateUserSchema),
+  } = useForm<TLoginRequest>({
+    resolver: zodResolver(LoginUserSchema),
     defaultValues: {
-      username: "",
       email: "",
-      password: "",
+      Password: "",
     },
   });
 
-  const onSubmit = async (data: TCreateUser) => {
+  const onSubmit = async (data: TLoginRequest) => {
     setServerError(null);
     try {
-      const response = await api.post("/users/register", data);
+      const response = await api.post("/users/login", data);
       if(response.data.data){
-navigate("/");
+        const from = (location.state as { from?: string } | null)?.from ?? "/products";
+        navigate(from, { replace: true });
       }
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Registration failed. Please try again.";
+      const message = error instanceof Error ? error.message : "Something went wrong. Please try again.";
       setServerError(message);
     }
   };
@@ -40,9 +39,7 @@ navigate("/");
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-sm rounded-lg bg-white p-6 shadow-md">
-        <h2 className="mb-6 text-center text-2xl font-semibold">
-          Create Account
-        </h2>
+        <h2 className="mb-6 text-center text-2xl font-semibold">Login</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {serverError && (
@@ -51,33 +48,13 @@ navigate("/");
             </div>
           )}
           <div>
-            <label htmlFor="signup-username" className="mb-1 block text-sm font-medium">
-              Username
-            </label>
+            <label htmlFor="login-email" className="mb-1 block text-sm font-medium">Email</label>
             <input
-              id="signup-username"
-              type="text"
-              {...register("username")}
-              placeholder="Enter username"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
-            />
-            {errors.username && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.username.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="signup-email" className="mb-1 block text-sm font-medium">
-              Email
-            </label>
-            <input
-              id="signup-email"
+              id="login-email"
               type="email"
               {...register("email")}
-              placeholder="Enter email"
               className="w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+              placeholder="Enter your email"
             />
             {errors.email && (
               <p className="mt-1 text-sm text-red-500">
@@ -87,19 +64,17 @@ navigate("/");
           </div>
 
           <div>
-            <label htmlFor="signup-password" className="mb-1 block text-sm font-medium">
-              Password
-            </label>
+            <label htmlFor="login-password" className="mb-1 block text-sm font-medium">Password</label>
             <input
-              id="signup-password"
+              id="login-password"
               type="password"
-              {...register("password")}
-              placeholder="Enter password"
+              {...register("Password")}
               className="w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+              placeholder="Enter your password"
             />
-            {errors.password && (
+            {errors.Password && (
               <p className="mt-1 text-sm text-red-500">
-                {errors.password.message}
+                {errors.Password.message}
               </p>
             )}
           </div>
@@ -109,17 +84,17 @@ navigate("/");
             disabled={isSubmitting}
             className="w-full rounded-md bg-blue-600 py-2 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-400"
           >
-            {isSubmitting ? "Creating Account..." : "Sign Up"}
+            {isSubmitting ? "Logging in..." : "Login"}
           </button>
         </form>
 
         <p className="mt-5 text-center text-sm text-gray-600">
-          Already have an account?{" "}
+          dont  have an account?{" "}
           <Link
-            to="/login"
+            to="/signup"
             className="font-medium text-blue-600 hover:underline"
           >
-            Login
+            Create one
           </Link>
         </p>
       </div>
@@ -127,4 +102,4 @@ navigate("/");
   );
 };
 
-export default SignupPage;
+export default LoginPage;

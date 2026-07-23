@@ -15,7 +15,7 @@ const FeatureCard = ({ Icon, title, description, size = 28, className }: Feature
       <Icon size={size} />
       <div className="flex flex-col items-center  w-full">
         <h2 className="text-xl font-semibold ">{title}</h2>
-        <p className="line-clamp-2 text-gray-500/40">{description}</p>
+        <p className="line-clamp-2 text-gray-500">{description}</p>
       </div>
     </div>
   );

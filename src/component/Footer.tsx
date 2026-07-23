@@ -6,22 +6,14 @@ const Footer = () => {
   const routes = [
     {
       path: '/',
-      label: 'URL Shortener',
-    },
-    {
-      path: '/about',
-      label: 'About',
-    },
-    {
-      path: '/contact',
-      label: 'Contact',
+      label: 'SaleShop',
     },
   ];
 
   return (
     <footer className="flex flex-col items-center justify-center bg-neutral-800 w-full h-32 text-white border-t-2 border-t-sky-600">
       <div className="text-center">
-        <p>© {year} URL Shortener - Tool to shorten long links</p>
+        <p>© {year} SaleShop - Ecommerce platform</p>
         <span>
           Powered by <span className="font-semibold text-sky-400">Mitesh</span>
         </span>

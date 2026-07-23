@@ -1,13 +1,8 @@
 import { Outlet } from 'react-router';
-import Header from './component/Header';
 import Footer from './component/Footer';
-const Layout = () => {
-  return (
-    <section className="flex flex-col w-full min-h-screen ">
-      <Header />
-      <Outlet />
-      <Footer />
-    </section>
-  );
-};
-export default Layout;
+import Header from './component/Header';
+import ProtectedRoute from './component/ProtectedWrapper';
+
+export default function Layout() {
+  return <ProtectedRoute><section className="flex min-h-screen flex-col bg-gray-50"><Header/><div className="flex-1"><Outlet/></div><Footer/></section></ProtectedRoute>;
+}

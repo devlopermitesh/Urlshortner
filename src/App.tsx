@@ -1,57 +1,95 @@
 //
 import './App.css';
 import FeatureCard from './component/FeatureCard';
-import ShortnerForm from './component/ShortnerForm';
-import { Link, QrCode, BarChart3, ShieldCheck, Zap, ThumbsUp } from 'lucide-react';
+import {
+  ShoppingCart,
+  Truck,
+  ShieldCheck,
+  CreditCard,
+  PackageCheck,
+  Headphones,
+} from "lucide-react";
+import { useEffect, useState } from 'react';
+import { api } from './utils/api';
+import Products from './component/Products';
+import { useOutletContext } from 'react-router';
+import type { Product } from './features/ecommerce/types';
+type OutletContext = {
+  products: Product[];
+ setProducts:React.Dispatch<React.SetStateAction<Product[]>>
+};
 
 const Features = [
   {
-    icon: ThumbsUp,
-    title: 'Easy to Use',
-    description: 'Paste your long URL and get a short link in seconds.',
+    icon: ShoppingCart,
+    title: "Easy Shopping",
+    description:
+      "Browse thousands of products and add your favorite items to cart effortlessly.",
   },
   {
-    icon: Zap,
-    title: 'Fast Redirects',
-    description: 'Optimized redirects ensure users reach their destination instantly.',
-  },
-  {
-    icon: Link,
-    title: 'Custom Short Links',
-    description: 'Create memorable custom aliases instead of random characters.',
-  },
-  {
-    icon: QrCode,
-    title: 'QR Codes',
-    description: 'Generate a QR code for every short link to share anywhere.',
-  },
-  {
-    icon: BarChart3,
-    title: 'Analytics',
-    description: 'Track clicks, visitors, devices, and locations with detailed insights.',
+    icon: Truck,
+    title: "Fast Delivery",
+    description:
+      "Get your orders delivered quickly with reliable and trackable shipping.",
   },
   {
     icon: ShieldCheck,
-    title: 'Secure',
-    description: 'Unique short codes with validation and secure redirects.',
+    title: "Secure Payments",
+    description:
+      "Shop safely with secure payment options and protected transactions.",
+  },
+  {
+    icon: PackageCheck,
+    title: "Quality Products",
+    description:
+      "Discover verified products with great quality and trusted sellers.",
+  },
+  {
+    icon: CreditCard,
+    title: "Multiple Payment Options",
+    description:
+      "Pay your way with flexible payment methods including cards and online payments.",
+  },
+  {
+    icon: Headphones,
+    title: "Customer Support",
+    description:
+      "Get quick assistance from our support team whenever you need help.",
   },
 ];
 function App() {
+
+  const { products, setProducts  } = useOutletContext<OutletContext>();
+ const LIMIT = 10;
+
+const [currentPage, setCurrentPage] = useState(1);
+const [totalItems, setTotalItems] = useState(0);
+
+useEffect(() => {
+  async function fetchProducts() {
+    try {
+      const { data } = await api.get("/items", {
+        params: {
+          page: currentPage,
+          limit: LIMIT,
+        },
+      });
+      setProducts(data.data.data); // current page products
+      setTotalItems(data.data.pagination.totalItems);  // total number of products
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  fetchProducts();
+}, [currentPage, setProducts]);
+
   return (
     <>
       <div className="flex flex-col w-full justify-center items-center">
-        <ShortnerForm />
-        {/* Create Account */}
-        <div className="flex flex-col items-center max-w-6xl rounded shadow shadow-gray-500/30 px-4 md:px-16 py-6 gap-4">
-          <h3 className="text-3xl font-bold text-neutral-700">Want More? Try Premium Features!</h3>
-          <p className="max-w-3xl text-md text-gray-600">
-            Custom short links, powerful dashboard, detailed analytics, API, UTM builder, QR codes,
-            browser extension, app integrations and support. Start Free
-          </p>
-          <button className="block mt-4 bg-blue-500 text-white w-auto h-12 mx-auto px-16 font-semibold  cursor-pointer ">
-            Create Account
-          </button>
-        </div>
+
+        {/* Products Card */}
+    <Products totalItems={totalItems}  products={products} LIMIT={LIMIT} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
         {/* Features Card */}
         <div className="grid  grid-cols-2 md:grid-cols-3 grid-rows-3 gap-4 mt-4  max-w-5xl">
           {Features.map((feature) => (

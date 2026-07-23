@@ -26,14 +26,11 @@ export async function SubmitAction({ request }: { request: Request }): Promise<R
       };
     }
 
-    const response = await api('new_url', {
-      method: 'POST',
-      body: JSON.stringify({ url }),
-    });
+    const response = await api.post('new_url', { url });
     return {
       success: true,
       message: 'Short URL created successfully.',
-      data: response,
+      data: response.data as ResponseState['data'],
     };
   } catch (error) {
     return {
